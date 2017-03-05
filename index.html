@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hangman</title>
+
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+</head>
+<body>
+<div class="container">
+      <!-- HEADER -->
+      <div class = "row">
+        <div class="col-md-12 text-center jumbotron">
+        <h1>HANGMAN</h1>
+        </div>
+      </div>
+
+      <!-- IMAGE CORRESPONDING WITH WORD -->
+      <div class = "row">
+        <div class="col-md-12 text-center">
+        <img src="http://www.hbook.com/wp-content/uploads/2013/09/question-mark.jpg" alt="image">
+        </div>
+      </div>
+
+      <!-- BLANK SPACES / LETTERS GUESSED RIGHT -->
+      <div class = "row">
+        <div class="col-md-12 text-center">
+          <h1 id="lettersRight">SPACES</h1>
+          <h4><span id="demo">word test</span></h4>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div class = "row">
+        <div class="col-md-12 text-center">
+          <h6>Wins: <span id="wins">0</span></h6>
+          <h6>Losses: <span id="losses">0</span></h6>
+        </div>
+      </div>
+    
+    <!-- LETTERS ALREADY GUESSED -->
+      <div class="row">
+
+        <div class="col-md-6 text-center">
+
+            <h3>You guessed: </h3><br>
+            <h4><span id="guesses">blank</span></h4>
+
+        </div>
+
+        <div class="col-md-6 text-center">
+          <h3>Guesses Remaining: </h3><br>
+          <h4><span id="guessesLeft">blank</span></h4>
+        </div>
+
+      </div> 
+      
+      <!-- BUTTON TO BEGIN -->
+      <div class = "row">
+        <div class = "col-md-12 text-center">
+          <button class = "btn btn-primary" id = "button-random">Click to Begin</button>
+        </div>
+      </div><!-- close the row -->
+
+    </div><!-- close the container -->
+
+
+</body>
+
+
+<script type="text/javascript">   
+
+  var myArray = ['January', 'February', 'March', 'April', 'May'];
+  var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];   
+  var gameImages = []; 
+  var wins = 0;
+  var losses = 0;  
+  // create variables that will reference the guesses and guesses left <span>.
+  var userGuess = document.getElementById("guesses");
+  var guessesLeft = document.getElementById("guessesLeft");
+
+  // create an array to store all of the guesses
+  var allguesses = [];
+
+  // create a variable to count how many guesses left
+  var guessesCounter = 12;
+
+// PULLING FROM THE ARRAY OF WORDS AND DISPLAYING BLANK SPACES ON THE PAGE
+// ___________________________________________     
+// ___________________________________________     
+
+  function randomWord() {
+  
+    // generate a random number between 0 and length of the array
+    var rand = Math.floor(Math.random() * myArray.length);
+  
+    // the random number will be used as the index in the array
+    var selectedWord = myArray[rand];
+
+    console.log(selectedWord);
+
+    // this will display the selected string from the array on the page
+    document.getElementById("demo").innerHTML = (selectedWord);
+
+    var wordLength = selectedWord.length;
+
+    var spaces = [];
+
+    for(var i = 0; i < wordLength; i++) {
+    // upload an underscore to the array
+      spaces.push("_ ");
+    }
+
+    // joins the elements of an array into a string separated by spaces
+    var lettersRight = spaces.join(" ");
+    // show the underscores on the page within the #lettersRight <p>
+    document.getElementById("lettersRight").innerHTML = lettersRight;
+  };
+
+// when the button is clicked, run the function to grab a random string from the array
+document.getElementById("button-random").addEventListener("click", randomWord);  
+
+  // STORING THE USER GUESSES
+  // ___________________________________________
+  // ___________________________________________     
+
+  // function to execute when user presses a key
+  document.onkeyup = function() {
+
+      // decrease number of guesses left by 1
+      guessesCounter--;
+
+      // show number of guesses left on the page
+      guessesLeft.textContent = guessesCounter;
+    
+    // only store and check user guesses if the user has guesses remaining
+    if (guessesCounter > 0) {
+
+      // take the character typed in by user, change to lowercase, and store in variable
+      var guess = String.fromCharCode(event.keyCode).toLowerCase();
+
+      // upload the guess to the array
+      allguesses.push(guess);
+
+      // joins the elements of an array into a string separated by spaces
+      var showguesses = allguesses.join(" ");
+
+      // show the guesses on the page within the #guesses <span>
+      guesses.textContent = showguesses;
+
+      // // decrease number of guesses left by 1
+      // guessesCounter--;
+
+      // // show number of guesses left on the page
+      // guessesLeft.textContent = guessesCounter;
+
+      // check all characters of the selected word to see if the user guess matches
+      for (var i = 0; i < selectedWord.length; i++) {
+        if (guess == allguesses[i]) {
+          alert("you guessed correctly!");
+        }
+      }
+
+    }
+
+    else if (guessesCounter === 0) {
+    // if they run out of guesses, they lose
+      losses--;
+    // show number of losses on the page
+      document.getElementById("losses").innerHTML = (losses);
+    }
+
+    // if user keeps trying to guess then tell them they have no guesses remaining
+    else if (guessesCounter < 0) {
+      guessesLeft.textContent = "You have no guesses remaining.";
+    }
+
+  };
+
+
+  // if (array.indexOf(guess) > -1) // string IS in the array
+
+
+
+</script>
+</html>
